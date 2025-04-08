@@ -1,5 +1,5 @@
-﻿using Elders.Pandora.Consul.Consul;
-using Elders.Pandora.Consul.Consul.Models;
+﻿using One.Settix.Consul.Consul;
+using One.Settix.Consul.Consul.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Elders.Pandora
+namespace One.Settix
 {
-    public class ConsulForPandora : IConfigurationRepository
+    public class ConsulForSettix : IConfigurationRepository
     {
-        public const string RootFolder = "pandora";
+        public const string RootFolder = "settix";
 
         private readonly ConsulClient _client;
 
-        public ConsulForPandora(Uri address = null)
+        public ConsulForSettix(Uri address = null)
         {
             _client = new ConsulClient(address);
         }
@@ -56,19 +56,19 @@ namespace Elders.Pandora
             return value;
         }
 
-        public IEnumerable<DeployedSetting> GetAll(IPandoraContext context)
+        public IEnumerable<DeployedSetting> GetAll(ISettixContext context)
         {
-            string pandoraApplication = context.ToApplicationKeyPrefix();
-            Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
+            string settixApplication = context.ToApplicationKeyPrefix();
+            Console.WriteLine($"Refreshing {settixApplication} configuration from Consul - {Thread.CurrentThread.ManagedThreadId}");
 
-            IEnumerable<ReadKeyValueResponse> response = _client.ReadAllKeyValuesAsync(pandoraApplication).GetAwaiter().GetResult();
+            IEnumerable<ReadKeyValueResponse> response = _client.ReadAllKeyValuesAsync(settixApplication).GetAwaiter().GetResult();
 
             // Filters out empty values, if we don't do this we will get an exception when we try to create DeployedSetting with an empty value.
             // And we lose all settings instead of skipping only the broken ones.
             IEnumerable<ReadKeyValueResponse> nonEmptyResponses = response.Where(x => string.IsNullOrEmpty(x.Value) == false);
             List<DeployedSetting> newSettings = nonEmptyResponses.Select(x => new DeployedSetting(x.Key.FromConsulKey(), Encoding.UTF8.GetString(Convert.FromBase64String(x.Value)))).ToList();
 
-            Console.WriteLine($"Refreshing {pandoraApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
+            Console.WriteLine($"Refreshing {settixApplication} configuration from Consul completed - {Thread.CurrentThread.ManagedThreadId}");
 
             return newSettings;
         }

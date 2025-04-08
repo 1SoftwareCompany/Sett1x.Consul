@@ -1,5 +1,5 @@
 ﻿
-namespace Elders.Pandora.Consul.Consul.Models
+namespace One.Settix.Consul.Consul.Models
 {
     public class ReadKeyValueResponse
     {

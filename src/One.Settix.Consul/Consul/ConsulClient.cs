@@ -1,4 +1,4 @@
-﻿using Elders.Pandora.Consul.Consul.Models;
+﻿using One.Settix.Consul.Consul.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Elders.Pandora.Consul.Consul
+namespace One.Settix.Consul.Consul
 {
     internal class ConsulClient
     {

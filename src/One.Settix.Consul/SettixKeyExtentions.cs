@@ -1,16 +1,16 @@
-﻿namespace Elders.Pandora
+﻿namespace One.Settix
 {
-    public static class PandoraKeyExtentions
+    public static class SettixKeyExtentions
     {
         public static string ToConsulKey(this string rawKey)
         {
             var key = Key.Parse(rawKey);
-            return $"{ConsulForPandora.RootFolder}/{key.ApplicationName}/{key.Cluster}/{key.Machine}/{key.SettingKey}";
+            return $"{ConsulForSettix.RootFolder}/{key.ApplicationName}/{key.Cluster}/{key.Machine}/{key.SettingKey}";
         }
 
-        public static string ToApplicationKeyPrefix(this IPandoraContext context)
+        public static string ToApplicationKeyPrefix(this ISettixContext context)
         {
-            return $"{ConsulForPandora.RootFolder}/{context.ApplicationName}".ToLower();
+            return $"{ConsulForSettix.RootFolder}/{context.ApplicationName}".ToLower();
         }
 
         public static Key FromConsulKey(this string consulKey)

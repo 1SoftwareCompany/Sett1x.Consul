@@ -6,22 +6,23 @@
 
   <!--Nuget-->
   <PropertyGroup>
-    <PackageId>Pandora.Consul</PackageId>
-    <Product>Pandora.Consul</Product>
-    <Title>Pandora</Title>
-    <Copyright>Copyright © Elders OSS 2013-2022</Copyright>
-    <Description>Integration which utilizes Consul and pandora to setup configurations</Description>
+    <PackageId>Sett1x.Consul</PackageId>
+    <Product>Sett1x</Product>
+    <Title>Sett1x</Title>
+
+    <Copyright>1Software</Copyright>
+    <Description>Integration which utilizes Consul and Sett1x to setup configurations</Description>
     <PackageTags>Configuration Json Environment Environments Staging Production Dev Local</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/Elders/Pandora.Consul</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Elders/Pandora.Consul.git</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/pandora/white.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/1SoftwareCompany/Sett1x.Consul</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/1SoftwareCompany/Sett1x.Consul.git</RepositoryUrl>
+
     <RepositoryType>git</RepositoryType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyName>Elders.Pandora.Consul</AssemblyName>
+    <AssemblyName>One.Settix.Consul</AssemblyName>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <AssemblyVersion>5.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +31,7 @@
 
   <!--Nuget Dependencies-->
   <ItemGroup>
-    <PackageReference Include="Pandora" Version="4.0.2" />
+    <PackageReference Include="Sett1x" Version="5.0.0" />
   </ItemGroup>
 
   <!--Debug Symbols-->

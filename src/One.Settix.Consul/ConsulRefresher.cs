@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Elders.Pandora.Consul.Consul;
+using One.Settix.Consul.Consul;
 using Microsoft.Extensions.Primitives;
 
-namespace Elders.Pandora
+namespace One.Settix
 {
-    internal class ConsulRefresher : IPandoraWatcher
+    internal class ConsulRefresher : ISettixWatcher
     {
-        private readonly Pandora pandora;
+        private readonly Settix settix;
         private readonly ConsulClient consul;
         private readonly TimeSpan refreshInterval;
         private IChangeToken changeToken;
         private CancellationTokenSource consulConfigurationTokenSource;
         private readonly Task getTask;
 
-        public ConsulRefresher(Pandora pandora, ConsulClient consul, TimeSpan refreshInterval)
+        public ConsulRefresher(Settix settix, ConsulClient consul, TimeSpan refreshInterval)
         {
-            this.pandora = pandora;
+            this.settix = settix;
             this.consul = consul;
             this.refreshInterval = refreshInterval;
             getTask = Task.Factory.StartNew(RefreshAsync);
@@ -53,8 +53,8 @@ namespace Elders.Pandora
 
         private async Task<ulong> GetConsulIndexAsync()
         {
-            string pandoraApplication = pandora.ApplicationContext.ToApplicationKeyPrefix();
-            var response = await consul.ReadAllKeyValuesAndMonitorAsync(pandoraApplication, refreshInterval, consulIndex).ConfigureAwait(false);
+            string settixApplication = settix.ApplicationContext.ToApplicationKeyPrefix();
+            var response = await consul.ReadAllKeyValuesAndMonitorAsync(settixApplication, refreshInterval, consulIndex).ConfigureAwait(false);
 
             return response.lastIndex;
         }

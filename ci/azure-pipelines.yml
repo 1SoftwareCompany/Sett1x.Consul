@@ -1,6 +1,6 @@
 ---
 variables:
-  PROJECT_DIR: Elders.Pandora.Consul
+  PROJECT_DIR: One.Settix.Consul
 
 trigger:
   branches:

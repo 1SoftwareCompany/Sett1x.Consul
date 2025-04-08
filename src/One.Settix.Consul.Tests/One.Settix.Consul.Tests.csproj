@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Elders.Pandora.Consul\Elders.Pandora.Consul.csproj" />
+    <ProjectReference Include="..\One.Settix.Consul\One.Settix.Consul.csproj" />
   </ItemGroup>
 
   <ItemGroup>

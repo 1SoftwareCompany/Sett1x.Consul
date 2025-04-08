@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elders.Pandora.Consul", "Elders.Pandora.Consul\Elders.Pandora.Consul.csproj", "{9FA368C6-5AFD-4707-B6C2-50D1DC9A07AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "One.Settix.Consul", "One.Settix.Consul\One.Settix.Consul.csproj", "{9FA368C6-5AFD-4707-B6C2-50D1DC9A07AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elders.Pandora.Consul.Tests", "Elders.Pandora.Consul.Tests\Elders.Pandora.Consul.Tests.csproj", "{F367FC8E-F157-4952-B7E6-1C0AA563C425}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "One.Settix.Consul.Tests", "One.Settix.Consul.Tests\One.Settix.Consul.Tests.csproj", "{F367FC8E-F157-4952-B7E6-1C0AA563C425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
