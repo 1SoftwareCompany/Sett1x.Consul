@@ -1,3 +1,10 @@
+# [5.0.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v4.0.0...v5.0.0) (2025-04-08)
+
+
+### Bug Fixes
+
+* Set up CI with Azure Pipelines ([6b9c045](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/6b9c045f677837161c79d3e6663a9eef0dac02de))
+
 ## [4.0.1](https://github.com/Elders/Pandora.Consul/compare/v4.0.0...v4.0.1) (2025-03-25)
 
 
