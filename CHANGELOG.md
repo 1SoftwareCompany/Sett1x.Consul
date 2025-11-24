@@ -1,3 +1,5 @@
+# [6.0.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v5.0.0...v6.0.0) (2025-11-24)
+
 # [5.0.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v4.0.0...v5.0.0) (2025-04-08)
 
 
