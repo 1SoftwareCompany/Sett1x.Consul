@@ -27,10 +27,10 @@ jobs:
       projects: '**/*Tests.csproj'
 
   - task: UseDotNet@2
-    displayName: 'Use .NET 9 Sdk'
+    displayName: 'Use .NET 10 Sdk'
     inputs: 
       packageType: 'sdk'
-      version: '9.x'
+      version: '10.x'
       includePreviewVersions: true
 
   - task: DotNetCoreCLI@2
