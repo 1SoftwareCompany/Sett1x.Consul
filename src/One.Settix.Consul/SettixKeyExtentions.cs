@@ -8,6 +8,11 @@
             return $"{ConsulForSettix.RootFolder}/{key.ApplicationName}/{key.Cluster}/{key.Machine}/{key.SettingKey}";
         }
 
+        public static string ToConsulKey(this string rawKey, ISettixContext context)
+        {
+            return $"{ConsulForSettix.RootFolder}/{context.ApplicationName}/{context.Cluster}/{context.Machine}/{rawKey}";
+        }
+
         public static string ToApplicationKeyPrefix(this ISettixContext context)
         {
             return $"{ConsulForSettix.RootFolder}/{context.ApplicationName}".ToLower();

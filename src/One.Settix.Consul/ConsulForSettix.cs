@@ -9,15 +9,20 @@ using System.Threading.Tasks;
 
 namespace One.Settix
 {
-    public class ConsulForSettix : IConfigurationRepository
+    public class ConsulForSettix : IConfigurationRepository, IGlobalConfigurationRepository
     {
         public const string RootFolder = "settix";
 
         private readonly ConsulClient _client;
+        public ISettixContext GlobalContext { get; private set; }
 
         public ConsulForSettix(Uri address = null)
         {
             _client = new ConsulClient(address);
+
+            string globalApp = EnvVar.GetGlobalApplication();
+            if (string.IsNullOrEmpty(globalApp) == false)
+                GlobalContext = new GlobalContext(globalApp);
         }
 
         public Task<bool> ExistsAsync(string key)
@@ -85,6 +90,58 @@ namespace One.Settix
                 if (result == false)
                     throw new KeyNotFoundException("Unable to store key/value: " + normalizedKey + "  " + value);
             }
+        }
+
+        public async Task SetGlobalAsync(string key, string value)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+            if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
+
+            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            var result = await _client.CreateKeyValueAsync(prefixedKey, value).ConfigureAwait(false);
+            if (result == false)
+                throw new KeyNotFoundException("Unable to store key/value: " + prefixedKey + "  " + value);
+        }
+
+        public async Task<string> GetGlobalAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+            if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
+
+            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            ReadKeyValueResponse result = await _client.ReadKeyValueAsync(prefixedKey).ConfigureAwait(false);
+            if (result is null)
+                throw new KeyNotFoundException("Unable to find value for key: " + prefixedKey);
+
+            byte[] data = Convert.FromBase64String(result.Value);
+            return Encoding.UTF8.GetString(data);
+        }
+
+        public Task<bool> ExistsGlobalAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+            if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
+
+            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            return _client.ExistKeyValueAsync(prefixedKey);
+        }
+
+        public async Task DeleteGlobalAsync(string key)
+        {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
+            if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
+
+            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            bool result = await _client.DeleteKeyValueAsync(prefixedKey).ConfigureAwait(false);
+            if (result == false)
+                throw new KeyNotFoundException("Unable to delete key/value with key: " + prefixedKey);
+        }
+
+        public IEnumerable<DeployedSetting> GetAllGlobal()
+        {
+            if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
+
+            return GetAll(GlobalContext);
         }
     }
 }
