@@ -97,7 +97,7 @@ namespace One.Settix
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
 
-            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            string prefixedKey = key.ToGlobalKey().ToConsulKey(GlobalContext).ToLower();
             var result = await _client.CreateKeyValueAsync(prefixedKey, value).ConfigureAwait(false);
             if (result == false)
                 throw new KeyNotFoundException("Unable to store key/value: " + prefixedKey + "  " + value);
@@ -108,7 +108,7 @@ namespace One.Settix
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
 
-            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            string prefixedKey = key.ToGlobalKey().ToConsulKey(GlobalContext).ToLower();
             ReadKeyValueResponse result = await _client.ReadKeyValueAsync(prefixedKey).ConfigureAwait(false);
             if (result is null)
                 throw new KeyNotFoundException("Unable to find value for key: " + prefixedKey);
@@ -122,7 +122,7 @@ namespace One.Settix
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
 
-            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            string prefixedKey = key.ToGlobalKey().ToConsulKey(GlobalContext).ToLower();
             return _client.ExistKeyValueAsync(prefixedKey);
         }
 
@@ -131,7 +131,7 @@ namespace One.Settix
             if (string.IsNullOrEmpty(key)) throw new ArgumentException(nameof(key));
             if (GlobalContext == null) throw new InvalidOperationException("Global context is not configured. Set the settix_global_application environment variable.");
 
-            string prefixedKey = key.ToGlobalKey().ToLower().ToConsulKey(GlobalContext);
+            string prefixedKey = key.ToGlobalKey().ToConsulKey(GlobalContext).ToLower();
             bool result = await _client.DeleteKeyValueAsync(prefixedKey).ConfigureAwait(false);
             if (result == false)
                 throw new KeyNotFoundException("Unable to delete key/value with key: " + prefixedKey);
