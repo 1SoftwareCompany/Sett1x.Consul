@@ -6,6 +6,8 @@ namespace One.Settix.Consul.Tests
 {
     public class ConsulForSettixFactory : ConsulForSettix
     {
+        public const string GlobalApplicationEnvironmentVariable = "settix_global_application";
+
         public static ConsulForSettix Create()
         {
             IConfiguration config = new ConfigurationBuilder()
@@ -15,6 +17,12 @@ namespace One.Settix.Consul.Tests
             string consulUrl = config["consulHost"];
 
             return new ConsulForSettix(new Uri(consulUrl));
+        }
+
+        public static ConsulForSettix CreateWithGlobalContext(string globalApplication = "one.settix.consul.tests.global")
+        {
+            Environment.SetEnvironmentVariable(GlobalApplicationEnvironmentVariable, globalApplication);
+            return Create();
         }
     }
 
