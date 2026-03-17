@@ -1,3 +1,17 @@
+# [6.1.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.0.0...v6.1.0) (2026-03-17)
+
+
+### Bug Fixes
+
+* Fixing global key construction ([25d28e7](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/25d28e70420fe2717e1e96b093c5bd66736481f8))
+* Update package ([431b218](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/431b218477547c224bdf75dbb986f55051f6cdae))
+
+
+### Features
+
+* Add global configs ([cb5f7b2](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/cb5f7b26096c3c96ce74398eb8a2294c8981bf7b))
+* Global configurations ([34a0914](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/34a091440fb7b7cfe4d188d96ee5b152d9a35e77))
+
 # [6.0.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v5.0.0...v6.0.0) (2025-11-24)
 
 # [5.0.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v4.0.0...v5.0.0) (2025-04-08)
