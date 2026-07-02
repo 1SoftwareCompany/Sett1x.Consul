@@ -5,7 +5,7 @@
 
   <!--Nuget Dependencies-->
   <ItemGroup>
-    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.2" />
+    <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.10.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="Machine.Specifications" version="1.1.3" />
