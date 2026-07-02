@@ -1,3 +1,10 @@
+## [6.1.2](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.1...v6.1.2) (2026-07-02)
+
+
+### Bug Fixes
+
+*  dependabot ([92f7f3d](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/92f7f3d66b3bc030a455ac1bad7963851a8c185c))
+
 ## [6.1.1](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.0...v6.1.1) (2026-03-18)
 
 
