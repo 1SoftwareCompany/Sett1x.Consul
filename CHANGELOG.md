@@ -1,3 +1,11 @@
+## [6.1.6](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.5...v6.1.6) (2026-07-15)
+
+
+### Bug Fixes
+
+* Bump Microsoft.Extensions.Configuration and Microsoft.Extensions.Configuration.Json ([449e15a](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/449e15ab02b2aceeabd11f274388cf72703501f5))
+* Bump Microsoft.Extensions.Configuration from 10.0.9 to 10.0.10 ([485e15f](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/485e15f3918a9d5097a2d905cf66be99aa0281b4))
+
 ## [6.1.5](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.4...v6.1.5) (2026-07-06)
 
 
