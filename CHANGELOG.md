@@ -1,3 +1,10 @@
+## [6.1.7](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.6...v6.1.7) (2026-07-16)
+
+
+### Bug Fixes
+
+* Bump Sett1x from 6.1.2 to 6.1.3 ([81a0b29](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/81a0b29fde48eae683b3679341d74179b3bb7a62))
+
 ## [6.1.6](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.5...v6.1.6) (2026-07-15)
 
 
