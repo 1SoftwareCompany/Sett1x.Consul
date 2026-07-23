@@ -1,3 +1,10 @@
+## [6.1.8](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.7...v6.1.8) (2026-07-23)
+
+
+### Bug Fixes
+
+* mend renovate ([0da87d6](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/0da87d6be2db85c72cacb215b9a2695709d71c9b))
+
 ## [6.1.7](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.6...v6.1.7) (2026-07-16)
 
 
