@@ -16,6 +16,7 @@ namespace One.Settix
         private IChangeToken changeToken;
         private CancellationTokenSource consulApplicationConfigurationTokenSource;
         private CancellationTokenSource consulGlobalConfigurationTokenSource;
+        private CancellationTokenSource linkedCts;
 
         public ConsulRefresher(Settix settix, ConsulClient consul, TimeSpan refreshInterval)
         {
@@ -33,7 +34,7 @@ namespace One.Settix
             consulApplicationConfigurationTokenSource = new CancellationTokenSource();
             consulGlobalConfigurationTokenSource = new CancellationTokenSource();
 
-            CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(consulApplicationConfigurationTokenSource.Token, consulGlobalConfigurationTokenSource.Token);
+            linkedCts = CancellationTokenSource.CreateLinkedTokenSource(consulApplicationConfigurationTokenSource.Token, consulGlobalConfigurationTokenSource.Token);
 
             changeToken = new CancellationChangeToken(linkedCts.Token);
 
@@ -45,6 +46,7 @@ namespace One.Settix
             getTask?.Dispose();
             consulApplicationConfigurationTokenSource?.Dispose();
             consulGlobalConfigurationTokenSource?.Dispose();
+            linkedCts?.Dispose();
         }
 
         private async Task RefreshAsync()
