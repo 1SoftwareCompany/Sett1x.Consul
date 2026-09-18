@@ -1,3 +1,10 @@
+## [6.1.9](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.8...v6.1.9) (2026-09-18)
+
+
+### Bug Fixes
+
+* Refresh Global Options ([dad8493](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/dad8493230e897cee450c3a9a474e82d312cddb8))
+
 ## [6.1.8](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.7...v6.1.8) (2026-07-23)
 
 
