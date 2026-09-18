@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using One.Settix.Consul.Consul;
 using Microsoft.Extensions.Primitives;
+using One.Settix.Consul.Consul;
 
 namespace One.Settix
 {
@@ -11,9 +11,11 @@ namespace One.Settix
         private readonly Settix settix;
         private readonly ConsulClient consul;
         private readonly TimeSpan refreshInterval;
-        private IChangeToken changeToken;
-        private CancellationTokenSource consulConfigurationTokenSource;
         private readonly Task getTask;
+
+        private IChangeToken changeToken;
+        private CancellationTokenSource consulApplicationConfigurationTokenSource;
+        private CancellationTokenSource consulGlobalConfigurationTokenSource;
 
         public ConsulRefresher(Settix settix, ConsulClient consul, TimeSpan refreshInterval)
         {
@@ -23,46 +25,17 @@ namespace One.Settix
             getTask = Task.Factory.StartNew(RefreshAsync);
         }
 
-        ulong consulIndex = 0;
-
-        private async Task RefreshAsync()
-        {
-            while (true)
-            {
-                try
-                {
-                    if (consulIndex == 0)
-                        consulIndex = await GetConsulIndexAsync().ConfigureAwait(false);
-
-                    var theIndex = await GetConsulIndexAsync().ConfigureAwait(false);
-
-                    if (consulIndex != theIndex)
-                    {
-                        consulIndex = theIndex;
-                        consulConfigurationTokenSource?.Cancel();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"There was an error while getting configuration from consul. Retrying in 10 seconds...{Environment.NewLine}{ex.Message}");
-                    consulIndex = 0;
-                    await Task.Delay(10_000).ConfigureAwait(false);
-                }
-            }
-        }
-
-        private async Task<ulong> GetConsulIndexAsync()
-        {
-            string settixApplication = settix.ApplicationContext.ToApplicationKeyPrefix();
-            var response = await consul.ReadAllKeyValuesAndMonitorAsync(settixApplication, refreshInterval, consulIndex).ConfigureAwait(false);
-
-            return response.lastIndex;
-        }
+        ulong consulApplicationIndex = 0;
+        ulong consulGlobalIndex = 0;
 
         public IChangeToken Watch()
         {
-            consulConfigurationTokenSource = new CancellationTokenSource();
-            changeToken = new CancellationChangeToken(consulConfigurationTokenSource.Token);
+            consulApplicationConfigurationTokenSource = new CancellationTokenSource();
+            consulGlobalConfigurationTokenSource = new CancellationTokenSource();
+
+            CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(consulApplicationConfigurationTokenSource.Token, consulGlobalConfigurationTokenSource.Token);
+
+            changeToken = new CancellationChangeToken(linkedCts.Token);
 
             return changeToken;
         }
@@ -70,7 +43,67 @@ namespace One.Settix
         public void Dispose()
         {
             getTask?.Dispose();
-            consulConfigurationTokenSource?.Dispose();
+            consulApplicationConfigurationTokenSource?.Dispose();
+            consulGlobalConfigurationTokenSource?.Dispose();
+        }
+
+        private async Task RefreshAsync()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (consulApplicationIndex == 0)
+                        consulApplicationIndex = await GetApplicationConsulIndexAsync().ConfigureAwait(false);
+
+                    ulong theApplicationIndex = await GetApplicationConsulIndexAsync().ConfigureAwait(false);
+                    if (consulApplicationIndex != theApplicationIndex)
+                    {
+                        consulApplicationIndex = theApplicationIndex;
+                        consulApplicationConfigurationTokenSource?.Cancel();
+                    }
+                    if (settix.GlobalContext is not null)
+                    {
+                        await RefreshGlobalAsync().ConfigureAwait(false);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"There was an error while getting configuration from consul. Retrying in 10 seconds...{Environment.NewLine}{ex.Message}");
+                    consulApplicationIndex = 0;
+                    consulGlobalIndex = 0;
+                    await Task.Delay(10_000).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private async Task RefreshGlobalAsync()
+        {
+            if (consulGlobalIndex == 0)
+                consulGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
+
+            ulong theGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
+            if (consulGlobalIndex != theGlobalIndex)
+            {
+                consulGlobalIndex = theGlobalIndex;
+                consulGlobalConfigurationTokenSource?.Cancel();
+            }
+        }
+
+        private async Task<ulong> GetApplicationConsulIndexAsync()
+        {
+            string settixApplication = settix.ApplicationContext.ToApplicationKeyPrefix();
+            var response = await consul.ReadAllKeyValuesAndMonitorAsync(settixApplication, refreshInterval, consulApplicationIndex).ConfigureAwait(false);
+
+            return response.lastIndex;
+        }
+
+        private async Task<ulong> GetGlobalConsulIndexAsync()
+        {
+            string settixApplication = settix.GlobalContext.ToApplicationKeyPrefix();
+            var response = await consul.ReadAllKeyValuesAndMonitorAsync(settixApplication, refreshInterval, consulGlobalIndex).ConfigureAwait(false);
+
+            return response.lastIndex;
         }
     }
 }
