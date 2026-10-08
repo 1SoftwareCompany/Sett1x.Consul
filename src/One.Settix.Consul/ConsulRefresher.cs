@@ -12,6 +12,7 @@ namespace One.Settix
         private readonly ConsulClient consul;
         private readonly TimeSpan refreshInterval;
         private readonly Task getTask;
+        private readonly Task getGlobalTask;
 
         private IChangeToken changeToken;
         private CancellationTokenSource consulApplicationConfigurationTokenSource;
@@ -24,6 +25,7 @@ namespace One.Settix
             this.consul = consul;
             this.refreshInterval = refreshInterval;
             getTask = Task.Factory.StartNew(RefreshAsync);
+            getGlobalTask = Task.Factory.StartNew(RefreshGlobalAsync);
         }
 
         ulong consulApplicationIndex = 0;
@@ -64,16 +66,11 @@ namespace One.Settix
                         consulApplicationIndex = theApplicationIndex;
                         consulApplicationConfigurationTokenSource?.Cancel();
                     }
-                    if (settix.GlobalContext is not null)
-                    {
-                        await RefreshGlobalAsync().ConfigureAwait(false);
-                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"There was an error while getting configuration from consul. Retrying in 10 seconds...{Environment.NewLine}{ex.Message}");
                     consulApplicationIndex = 0;
-                    consulGlobalIndex = 0;
                     await Task.Delay(10_000).ConfigureAwait(false);
                 }
             }
@@ -81,14 +78,29 @@ namespace One.Settix
 
         private async Task RefreshGlobalAsync()
         {
-            if (consulGlobalIndex == 0)
-                consulGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
-
-            ulong theGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
-            if (consulGlobalIndex != theGlobalIndex)
+            if (settix.GlobalContext is not null)
             {
-                consulGlobalIndex = theGlobalIndex;
-                consulGlobalConfigurationTokenSource?.Cancel();
+                while (true)
+                {
+                    try
+                    {
+                        if (consulGlobalIndex == 0)
+                            consulGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
+
+                        ulong theGlobalIndex = await GetGlobalConsulIndexAsync().ConfigureAwait(false);
+                        if (consulGlobalIndex != theGlobalIndex)
+                        {
+                            consulGlobalIndex = theGlobalIndex;
+                            consulGlobalConfigurationTokenSource?.Cancel();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"There was an error while getting configuration from consul. Retrying in 10 seconds...{Environment.NewLine}{ex.Message}");
+                        consulGlobalIndex = 0;
+                        await Task.Delay(10_000).ConfigureAwait(false);
+                    }
+                }
             }
         }
 
