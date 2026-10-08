@@ -46,6 +46,7 @@ namespace One.Settix
         public void Dispose()
         {
             getTask?.Dispose();
+            getGlobalTask?.Dispose();
             consulApplicationConfigurationTokenSource?.Dispose();
             consulGlobalConfigurationTokenSource?.Dispose();
             linkedCts?.Dispose();
