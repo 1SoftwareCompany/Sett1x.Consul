@@ -1,3 +1,10 @@
+## [6.2.1](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.2.0...v6.2.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* Dispose the new task ([e437f0a](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/e437f0a9631beb719ba253a99c39b5a29fd2d166))
+
 # [6.2.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.9...v6.2.0) (2026-10-08)
 
 
