@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.9...v6.2.0) (2026-10-08)
+
+
+### Features
+
+* Use separate tasks to control refreshing of internal and global settings ([22a9452](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/22a94521ca5cd11d4592df822e222a4dd0928737))
+
 ## [6.1.9](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.1.8...v6.1.9) (2026-09-18)
 
 
