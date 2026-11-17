@@ -1,3 +1,10 @@
+## [6.2.2](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.2.1...v6.2.2) (2026-11-17)
+
+
+### Bug Fixes
+
+* preserve configuration during Consul outages and reload on recovery and update package versions ([f4a4e6c](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/f4a4e6c689a80c7920fbc00e9e760aeffb858d96))
+
 ## [6.2.1](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.2.0...v6.2.1) (2026-10-08)
 
 
