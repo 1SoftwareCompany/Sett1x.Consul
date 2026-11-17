@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -89,32 +90,34 @@ namespace One.Settix.Consul.Consul
 
             using (HttpResponseMessage response = await httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                if (response.IsSuccessStatusCode)
+                if (response.StatusCode != HttpStatusCode.NotFound)
+                    response.EnsureSuccessStatusCode();
+
+                if (response.Headers.Contains(Header_ConsulIndex))
                 {
-                    if (response.Headers.Contains(Header_ConsulIndex))
+                    try
                     {
-                        try
-                        {
-                            lastIndex = ulong.Parse(response.Headers.GetValues(Header_ConsulIndex).First());
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new FormatException($"Failed to parse {Header_ConsulIndex}. StatusCode: {response.StatusCode}", ex);
-                        }
+                        lastIndex = ulong.Parse(response.Headers.GetValues(Header_ConsulIndex).First());
                     }
-
-                    using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    catch (Exception ex)
                     {
-
-                        List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
-
-                        if (result?.Any() == true)
-                            return (result, lastIndex);
+                        throw new FormatException($"Failed to parse {Header_ConsulIndex}. StatusCode: {response.StatusCode}", ex);
                     }
+                }
+
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    return (Enumerable.Empty<ReadKeyValueResponse>(), lastIndex);
+
+                using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                {
+                    List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
+
+                    if (result?.Any() == true)
+                        return (result, lastIndex);
                 }
             }
 
-            return (Enumerable.Empty<ReadKeyValueResponse>(), 0);
+            return (Enumerable.Empty<ReadKeyValueResponse>(), lastIndex);
         }
 
         public async Task<IEnumerable<ReadKeyValueResponse>> ReadAllKeyValuesAsync(string key)
@@ -123,15 +126,17 @@ namespace One.Settix.Consul.Consul
 
             using (HttpResponseMessage response = await httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    {
-                        List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    return Enumerable.Empty<ReadKeyValueResponse>();
 
-                        if (result?.Any() == true)
-                            return result;
-                    }
+                response.EnsureSuccessStatusCode();
+
+                using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                {
+                    List<ReadKeyValueResponse> result = JsonSerializer.Deserialize<List<ReadKeyValueResponse>>(contentStrem, serializerOptions);
+
+                    if (result?.Any() == true)
+                        return result;
                 }
             }
 
