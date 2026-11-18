@@ -1,3 +1,10 @@
+## [6.2.3](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.2.2...v6.2.3) (2026-11-18)
+
+
+### Bug Fixes
+
+* require 200 OK from Consul KV and log errors/recovery to Serilog when available ([3e6da0b](https://github.com/1SoftwareCompany/Sett1x.Consul/commit/3e6da0b4e544ab1cf772b4ccee38617cbf3667ab))
+
 ## [6.2.2](https://github.com/1SoftwareCompany/Sett1x.Consul/compare/v6.2.1...v6.2.2) (2026-11-17)
 
 
