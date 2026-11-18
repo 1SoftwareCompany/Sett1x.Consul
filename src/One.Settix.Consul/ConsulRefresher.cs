@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
+using One.Settix.Consul;
 using One.Settix.Consul.Consul;
 
 namespace One.Settix
@@ -78,6 +79,7 @@ namespace One.Settix
                         lastIndex = await GetConsulIndexAsync(keyPrefix, lastIndex).ConfigureAwait(false);
                         if (reloadOnRecovery)
                         {
+                            ConsulLogger.Information(typeof(ConsulRefresher), "Consul recovered for {KeyPrefix}. Reloading configuration...", keyPrefix);
                             getTokenSource()?.Cancel();
                             reloadOnRecovery = false;
                         }
@@ -92,7 +94,7 @@ namespace One.Settix
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"There was an error while getting configuration from consul. Retrying in 10 seconds...{Environment.NewLine}{ex.Message}");
+                    ConsulLogger.Error(typeof(ConsulRefresher), ex, "There was an error while getting configuration from consul for {KeyPrefix}. Keeping last known configuration and retrying in 10 seconds...", keyPrefix);
                     lastIndex = 0;
                     reloadOnRecovery = true;
                     await Task.Delay(10_000).ConfigureAwait(false);

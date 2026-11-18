@@ -90,8 +90,7 @@ namespace One.Settix.Consul.Consul
 
             using (HttpResponseMessage response = await httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                if (response.StatusCode != HttpStatusCode.NotFound)
-                    response.EnsureSuccessStatusCode();
+                EnsureOkStatusCode(response, path);
 
                 if (response.Headers.Contains(Header_ConsulIndex))
                 {
@@ -104,9 +103,6 @@ namespace One.Settix.Consul.Consul
                         throw new FormatException($"Failed to parse {Header_ConsulIndex}. StatusCode: {response.StatusCode}", ex);
                     }
                 }
-
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                    return (Enumerable.Empty<ReadKeyValueResponse>(), lastIndex);
 
                 using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
@@ -126,10 +122,7 @@ namespace One.Settix.Consul.Consul
 
             using (HttpResponseMessage response = await httpClient.GetAsync(path).ConfigureAwait(false))
             {
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                    return Enumerable.Empty<ReadKeyValueResponse>();
-
-                response.EnsureSuccessStatusCode();
+                EnsureOkStatusCode(response, path);
 
                 using (var contentStrem = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
@@ -156,6 +149,16 @@ namespace One.Settix.Consul.Consul
             }
 
             return false;
+        }
+
+        private static void EnsureOkStatusCode(HttpResponseMessage response, string path)
+        {
+            if (response.StatusCode == HttpStatusCode.OK)
+                return;
+
+            string message = $"Consul request to '{path}' returned {(int)response.StatusCode} ({response.ReasonPhrase}).";
+            ConsulLogger.Warning(typeof(ConsulClient), "Consul request to {Path} returned {StatusCode} ({ReasonPhrase}).", path, (int)response.StatusCode, response.ReasonPhrase);
+            throw new HttpRequestException(message, null, response.StatusCode);
         }
     }
 }
